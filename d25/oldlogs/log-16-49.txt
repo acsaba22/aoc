@@ -1,0 +1,57 @@
+
+north
+south
+east
+north
+north
+take asterisk
+south
+west
+south
+take hologram
+north
+east
+west
+west
+take astronaut ice cream
+inv
+east
+south
+north
+east
+south
+take antenna
+north
+north
+south
+west
+south
+north
+east
+south
+east
+take ornament
+inv
+north
+west
+take fixed point
+east
+west
+east
+south
+west
+west
+north
+south
+south
+south
+west
+north
+take monolith
+north
+north
+east
+inv
+south
+south
+south

@@ -1,0 +1,33 @@
+
+east
+take food ration
+inv
+south
+take prime numbers
+take prime number
+north
+east
+take manifold
+south
+north
+east
+north
+east
+take spool of cat6
+inv
+west
+north
+take fuel cell
+inv
+south
+south
+east
+take jam
+inv
+west
+west
+west
+west
+north
+west
+take escape pod

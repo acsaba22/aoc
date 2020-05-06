@@ -1,0 +1,83 @@
+east
+take antena
+take antenna
+inv
+north
+west
+west
+take astronaut ice cream
+inv
+east
+south
+take hologram
+inv
+north
+west
+east
+weast
+east
+north
+take asterisk
+inv
+south
+south
+east
+take ornament
+inv
+north
+west
+take fixed point
+inv
+east
+south
+west
+west
+north
+south
+south
+south
+west
+east
+south
+take dark matter
+inv
+east
+west
+north
+north
+north
+inv
+east
+north
+inv
+drop antenna
+inv
+north
+south
+take antenna
+south
+north
+west
+south
+north
+east
+west
+east
+west
+west
+east
+south
+north
+east
+north
+south
+south
+west
+east
+east
+north
+west
+east
+south
+west
+west

@@ -1,0 +1,18 @@
+east
+take antena
+take antenna
+inv
+north
+west
+west
+take astronaut ice cream
+inv
+east
+south
+take hologram
+inv
+north
+west
+east
+weast
+east

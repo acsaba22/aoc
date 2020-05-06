@@ -6,8 +6,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/eiannone/keyboard"
 )
 
 // MAXMEM is
@@ -400,46 +398,23 @@ type Stack struct {
 }
 
 func p2() {
-	readKeys := true
-	debKeys := []keyboard.Key{
-		keyboard.KeyArrowRight,
-		keyboard.KeyArrowLeft,
-		keyboard.KeyArrowUp,
-		keyboard.KeyArrowUp,
-		keyboard.KeyArrowUp,
-		keyboard.KeyArrowUp,
-		keyboard.KeyArrowUp,
-		keyboard.KeyBackspace2,
-		keyboard.KeyBackspace2,
-		keyboard.KeyBackspace2,
-		keyboard.KeyArrowRight,
-		keyboard.KeyBackspace2}
-	if readKeys {
-		err := keyboard.Open()
-		if err != nil {
-			panic(err)
-		}
-		defer keyboard.Close()
-	}
 	c := computerFromString("2"+s[1:], "")
 	done := make(chan struct{}, 10)
 	go c.runSignal(done)
 	img := newImage()
 	// for 0 < len(c.output) {
 	score := -1
-	// barPos := -1
-	// ballPos := -1
-	// ballPosPrev := -1
-	stack := []Stack{}
-	backed := false
-	finished := false
+	barPos := -1
+	ballPos := -1
+	ballPosPrev := -1
 	for {
 		read1 := false
-		for !backed && (!c.reading || 0 < len(c.output) || !read1) {
+		for !c.reading || 0 < len(c.output) || !read1 {
 			if 0 < len(done) {
-				acsLog(0, "Finsihed score:", score)
-				finished = true
-				break
+				for 0 < len(c.output) {
+					acsLog(0, "final output:", <-c.output)
+				}
+				log.Fatal("Finished score: " + strconv.Itoa(score))
 			}
 			read1 = true
 			x := <-c.output
@@ -459,28 +434,16 @@ func p2() {
 				r = 'O'
 			case 3:
 				r = '-'
-				// barPos = x
+				barPos = x
 			case 4:
 				r = 'X'
-				// ballPosPrev = ballPos
-				// ballPos = x
+				ballPosPrev = ballPos
+				ballPos = x
 			default:
 				log.Fatal("unknown tile type", r)
 			}
 			img.paint(point{y, x}, r)
 			acsLog(1, "paint", point{y, x}, string(r))
-		}
-		if finished {
-			acsLog(0, "You finished, going back, score:", score)
-			c.kill()
-			<-done
-
-			last := stack[len(stack)-2]
-			c, img, score = last.c, last.img, last.score
-			stack = stack[:len(stack)-1]
-			backed = true
-			go c.runSignal(done)
-			finished = false
 		}
 		time.Sleep(time.Millisecond * 1)
 		if 0 < len(c.output) || 0 < len(c.input) {
@@ -488,63 +451,43 @@ func p2() {
 		}
 		acsLog(0, img.str(' '))
 		acsLog(0, "Score:", score)
-		if backed {
-			backed = false
-		} else {
-			stack = append(stack, Stack{c.clone(), img.clone(), score})
+		joystick := 0
+		if ballPosPrev < 0 {
+			ballPosPrev = ballPos
 		}
-		// time.Sleep(time.Millisecond * 1000)
-		// // joystick := 0
-		// // ballPosNext := 2*ballPos - ballPosPrev
-		// // if ballPosNext < barPos {
-		// // 	joystick = -1
-		// // } else if barPos < ballPosNext {
-		// // 	joystick = 1
-		// // }
-		// // c.input <- joystick
-		// // acsLog(0, "Joystick:", joystick)
-		acsLog(0, "Stack size:", len(stack))
-		acsLog(0, "Press ESC to quit, arrows to play")
-		var (
-			char rune
-			key  keyboard.Key
-			err  error
-		)
-
-		if readKeys {
-			char, key, err = keyboard.GetKey()
-		} else {
-			if 0 < len(debKeys) {
-				char, key, err = ' ', debKeys[0], nil
-				debKeys = debKeys[1:]
-			} else {
-				err = nil
+		dir := ballPos - ballPosPrev
+		ballPosNext := ballPos + dir
+		diff := barPos - ballPos
+		acsLog(0, "dir", dir, "diff", diff)
+		// time.Sleep(time.Millisecond * 100)
+		if dir*diff < 0 {
+			if ballPosNext < barPos {
+				joystick = -1
+			} else if barPos < ballPosNext {
+				joystick = 1
 			}
 		}
+		c.input <- joystick
+		acsLog(0, "Joystick:", joystick)
+		// acsLog(0, "Stack size:", len(stack))
+		// acsLog(0, "Press ESC to quit, arrows to play")
+		// if key == keyboard.KeyArrowLeft {
+		// 	c.input <- -1
+		// } else if key == keyboard.KeyArrowRight {
+		// 	c.input <- 1
+		// } else if key == keyboard.KeyBackspace || key == keyboard.KeyBackspace2 {
+		// 	acsLog(1, "You pressed backspace")
+		// 	c.kill()
+		// 	<-done
 
-		if err != nil {
-			panic(err)
-		} else if key == keyboard.KeyEsc {
-			break
-		}
-		fmt.Printf("You pressed: %v   %q \n", key, char)
-		if key == keyboard.KeyArrowLeft {
-			c.input <- -1
-		} else if key == keyboard.KeyArrowRight {
-			c.input <- 1
-		} else if key == keyboard.KeyBackspace || key == keyboard.KeyBackspace2 {
-			acsLog(1, "You pressed backspace")
-			c.kill()
-			<-done
-
-			last := stack[len(stack)-2]
-			c, img, score = last.c, last.img, last.score
-			stack = stack[:len(stack)-1]
-			backed = true
-			go c.runSignal(done)
-		} else {
-			c.input <- 0
-		}
+		// 	last := stack[len(stack)-2]
+		// 	c, img, score = last.c, last.img, last.score
+		// 	stack = stack[:len(stack)-1]
+		// 	backed = true
+		// 	go c.runSignal(done)
+		// } else {
+		// 	c.input <- 0
+		// }
 	}
 }
 
@@ -556,3 +499,5 @@ func main() {
 	// p1()
 	p2()
 }
+
+// That's not the right answer; your answer is too low. If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit. Please wait one minute before trying again. (You guessed 15917.) [Return to Day 13]
