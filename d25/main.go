@@ -419,7 +419,9 @@ func read1(ch chan int) (int, bool) {
 
 }
 
-const stepsS = `north
+const stepsS = ``
+
+const stepsSOld = `north
 south
 east
 take antenna
@@ -569,9 +571,9 @@ func p1() {
 	p1a(readPrg(), nil, true)
 }
 
-const LOGLEVEL = 1
+const LOGLEVEL = 2
 
 func main() {
-	p1tryall() // 15969
-	// p1()
+	// p1tryall() // 15969
+	p1()
 }
