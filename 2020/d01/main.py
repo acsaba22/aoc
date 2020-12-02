@@ -1,7 +1,5 @@
 from typing import List
 
-# TODO(acsaba): find out how to get a "compile error" in vscode
-# TODO(acsaba): find out auto imports if possible
 # TODO(acsaba): find pypy launch bug
 def p1(nums: List[int]):
     n = len(nums)
