@@ -1,5 +1,3 @@
-from typing import List
-from itertools import count
 import numpy as np
 
 # TODO(acsaba): figure out typing with numpy.
