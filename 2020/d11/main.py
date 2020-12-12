@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import Callable, List
 from copy import deepcopy
+from itertools import chain
 
 class Img:
-    data: str
+    data: list[str]
     nx: int
     ny: int
     n: int
@@ -19,16 +20,16 @@ class Img:
         nx = ret.nx
         ret.neigh = [-nx-1, -nx, -nx+1, -1, +1, nx-1, nx, nx+1]
 
-        ret.data = ' '* ret.nx
+        ret.data = [' '] * ret.nx
         for line in lines:
             line = ' ' + line.strip() + ' '
             assert(len(line) == ret.nx)
-            ret.data += line
-        ret.data += ' ' * ret.nx
+            ret.data += list(line)
+        ret.data += [' '] * ret.nx
         return ret
 
     def __repr__(self) -> str:
-        return ''.join([self.data[y*self.nx:(y+1)*self.nx] + '|\n' for y in range(self.ny)])
+        return ''.join(chain(*[self.data[y*self.nx:(y+1)*self.nx] + ['|\n'] for y in range(self.ny)]))
 
 def neighCount1(img: Img, pos: int) -> int:
     return sum(1 for d in img.neigh if img.data[pos+d] == '#')
@@ -57,9 +58,9 @@ def solve(img: Img, neighCount: Callable[[Img, int], int], limit: int):
             nc = neighCount(img, p)
             # No string character replacement, ouch
             if nc == 0:
-                img2.data = img2.data[:p] + '#' + img2.data[p+1:]
+                img2.data[p] = '#'
             if limit <= nc:
-                img2.data = img2.data[:p] + 'L' + img2.data[p+1:]
+                img2.data[p] = 'L'
         if img.data == img2.data:
             same = True
         img = img2
