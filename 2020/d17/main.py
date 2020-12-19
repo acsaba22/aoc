@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List, NamedTuple, Tuple
+from typing import List, Tuple
 from collections import defaultdict
 
 Coor = Tuple[int, ...]
