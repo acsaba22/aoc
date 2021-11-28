@@ -10,3 +10,7 @@
 
 - dokumentacio javascript -> typescript:
   https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+
+# react:
+  - tutorial: https://reactjs.org/tutorial/tutorial.html
+  - setup without create-react-app: https://reactjs.org/tutorial/tutorial.html
