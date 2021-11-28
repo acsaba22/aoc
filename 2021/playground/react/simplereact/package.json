@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "static-server": "^2.2.1"
+  },
+  "scripts": {
+    "start": "static-server"
+  }
+}

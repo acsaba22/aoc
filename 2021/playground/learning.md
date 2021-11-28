@@ -13,4 +13,5 @@
 
 # react:
   - tutorial: https://reactjs.org/tutorial/tutorial.html
-  - setup without create-react-app: https://reactjs.org/tutorial/tutorial.html
+  - simple import: https://reactjs.org/docs/add-react-to-a-website.html
+
