@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <script>var exports = {};</script>
+  <meta charset="utf-8">
+  <title>Advent of Code 2020</title>
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "./src/fakeReact.mjs",
+        "react-dom": "./src/fakeReactDOM.mjs"
+      }
+    }
+</script>
+</head>
+
+<body>
+  <div id="root">
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const d = urlParams.get('d')
+    if (/[0-9]{2}/.test(d)) {
+      let script = document.createElement('script');
+      script.src = '/dist/d' + d + '/web.js'
+      script.type = 'module'
+      document.body.appendChild(script)
+    } else {
+      let err = document.createElement('div');
+      err.innerHTML = 'Specify ?d=NN'
+      document.body.appendChild(err)
+    }
+  </script>
+  <!-- <script src="/dist/d03/web.js" type="module"></script> -->
+</body>
+
+</html>

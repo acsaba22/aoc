@@ -2,11 +2,8 @@
 
 ## Running in browser from the web
 
-You can run the calculation in your browser here:
-
-* day 01: [https://aoc2021.acsaba.eu/src/d01/](https://aoc2021.acsaba.eu/src/d01/)
-* day 02: [https://aoc2021.acsaba.eu/src/d02/](https://aoc2021.acsaba.eu/src/d02/)
-* ...
+You can run the calculation in your browser by specifying d=NN like:
+[https://aoc2021.acsaba.eu/?d=01](https://aoc2021.acsaba.eu/?d=01)
 
 ## Running locally in nodeJS
 
@@ -52,4 +49,4 @@ $ cd 2021/solutions
 python3 -m http.server 8800
 ```
 
-Then go to: [http://localhost:8800/src/d02](http://localhost:8800/src/d02)
+Then go to: [http://localhost:8800/?d=03](http://localhost:8800/?d=03)
