@@ -3,8 +3,6 @@ import { type } from "os"
 declare function log(...args: any[]) : void;
 declare function loadFile(fname: string): Promise<string>
 
-type fuggveny = (n:number) => void
-
 function p1(lines: string[]) {
   let x = 0
   let y = 0
