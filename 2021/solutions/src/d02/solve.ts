@@ -6,14 +6,14 @@ declare function loadFile(fname: string): Promise<string>
 function p1(lines: string[]) {
   let x = 0
   let y = 0
-  const move = new Map([
-    ['forward', (n : number) => x += n],
-    ['down', (n : number) => y += n],
-    ['up', (n : number) => y -= n],
-  ])
+  const move : Record<string, (n: number) => number>  = {
+    'forward': (n : number) => x += n,
+    'down': (n : number) => y += n,
+    'up': (n : number) => y -= n,
+  }
   for (const l of lines) {
     const [d, n] = l.split(' ');
-    move.get(d)!(Number(n))
+    move[d](Number(n))
   }
   log('P1: ', x * y) // 1882980
 }

@@ -1,14 +1,14 @@
 function p1(lines) {
     let x = 0;
     let y = 0;
-    const move = new Map([
-        ['forward', (n) => x += n],
-        ['down', (n) => y += n],
-        ['up', (n) => y -= n],
-    ]);
+    const move = {
+        'forward': (n) => x += n,
+        'down': (n) => y += n,
+        'up': (n) => y -= n,
+    };
     for (const l of lines) {
         const [d, n] = l.split(' ');
-        move.get(d)(Number(n));
+        move[d](Number(n));
     }
     log('P1: ', x * y); // 1882980
 }
