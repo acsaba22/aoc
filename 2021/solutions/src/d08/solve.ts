@@ -1,13 +1,7 @@
-import { count } from "console"
+import * as util from '../util.js'
+
 declare function log(...args: any[]): void;
 declare function loadFile(fname: string): Promise<string>
-
-function assert(condition: boolean, message: string = "Assertion failed") {
-  if (!condition) {
-    throw new Error(message);
-  }
-}
-
 
 type digit = string[]
 
@@ -44,7 +38,7 @@ export async function main() {
           return d
         }
       }
-      assert(false, 'criteria not found')
+      util.assert(false, 'criteria not found')
       return []
     }
 

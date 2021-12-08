@@ -1,8 +1,4 @@
-function assert(condition, message = "Assertion failed") {
-    if (!condition) {
-        throw new Error(message);
-    }
-}
+import * as util from '../util.js';
 let N = 0;
 function ToCoord(x, y) {
     return y * N + x;
@@ -30,7 +26,7 @@ class Ocean {
         let x1 = X(p1);
         let dy = y1 - y0;
         let dx = x1 - x0;
-        assert(dy == 0 || dx == 0 || Math.abs(dy / dx) == 1);
+        util.assert(dy == 0 || dx == 0 || Math.abs(dy / dx) == 1);
         let step = N * Math.sign(dy) + 1 * Math.sign(dx);
         let c = p0 - step;
         do {

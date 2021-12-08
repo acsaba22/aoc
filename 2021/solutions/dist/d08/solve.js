@@ -1,8 +1,4 @@
-function assert(condition, message = "Assertion failed") {
-    if (!condition) {
-        throw new Error(message);
-    }
-}
+import * as util from '../util.js';
 function contains(d1, d2) {
     for (let d of d2) {
         if (!d1.includes(d)) {
@@ -31,7 +27,7 @@ export async function main() {
                     return d;
                 }
             }
-            assert(false, 'criteria not found');
+            util.assert(false, 'criteria not found');
             return [];
         }
         let dmap = Array(10).fill(null);

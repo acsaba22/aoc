@@ -1,14 +1,10 @@
+import * as util from '../util.js';
 const N = 5;
 const N2 = N * N;
 const NI = [0, 1, 2, 3, 4];
-function assert(condition, message = "Assertion failed") {
-    if (!condition) {
-        throw new Error(message);
-    }
-}
 class Card {
     constructor(v) {
-        assert(v.length == N2);
+        util.assert(v.length == N2);
         this.v = v;
         this.marked = Array(N2).fill(false);
     }
@@ -53,7 +49,7 @@ export async function main() {
     let lines = s.split('\n');
     let nums = lines[0].split(',').map(s => Number(s));
     let seq = lines.slice(2).join(' ').match(/[^ ]+/g).map(s => Number(s));
-    assert(seq.length % (N2) == 0);
+    util.assert(seq.length % (N2) == 0);
     let cards = [];
     while (0 < seq.length) {
         let [card, seq2] = takeCard(seq);

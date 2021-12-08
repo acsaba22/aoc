@@ -1,3 +1,5 @@
+import * as util from '../util.js'
+
 declare function log(...args: any[]): void;
 declare function loadFile(fname: string): Promise<string>
 
@@ -5,17 +7,11 @@ const N = 5
 const N2 = N * N
 const NI = [0, 1, 2, 3, 4]
 
-function assert(condition: boolean, message: string = "Assertion failed") {
-  if (!condition) {
-    throw new Error(message);
-  }
-}
-
 class Card {
   v: number[]
   marked: boolean[]
   constructor(v: number[]) {
-    assert(v.length == N2)
+    util.assert(v.length == N2)
     this.v = v
     this.marked = Array(N2).fill(false)
   }
@@ -67,7 +63,7 @@ export async function main() {
   let nums: number[] = lines[0].split(',').map(s => Number(s))
 
   let seq: number[] = lines.slice(2).join(' ').match(/[^ ]+/g)!.map(s => Number(s))
-  assert(seq.length % (N2) == 0)
+  util.assert(seq.length % (N2) == 0)
 
   let cards: Card[] = []
   while (0 < seq.length) {
