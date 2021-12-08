@@ -11,7 +11,7 @@ function digits(s) {
     return s.split(' ').map((x) => x.split('').sort());
 }
 export async function main() {
-    let s = await loadFile('/src/d08/input.txt');
+    let s = await util.loadFile('/src/d08/input.txt');
     let p1 = 0;
     let p2 = 0;
     for (let line of s.trim().split('\n')) {
@@ -46,6 +46,7 @@ export async function main() {
         var qdigits = question.map(x => x.join(''));
         p2 += val[qdigits[0]] * 1000 + val[qdigits[1]] * 100 + val[qdigits[2]] * 10 + val[qdigits[3]];
     }
-    log('P1: ', p1); // 488
-    log('P2: ', p2); // 1040429
+    util.log('P1: ', p1); // 488
+    util.log('P2: ', p2); // 1040429
 }
+main();

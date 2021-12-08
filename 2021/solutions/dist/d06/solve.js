@@ -1,3 +1,4 @@
+import * as util from '../util.js';
 function p12(s, rounds) {
     let buckets = Array(9).fill(0);
     s.split(',').forEach(x => buckets[Number(x)]++);
@@ -9,9 +10,10 @@ function p12(s, rounds) {
     return buckets.reduce((a, b) => a + b);
 }
 export async function main() {
-    let s = await loadFile('/src/d06/input.txt');
+    let s = await util.loadFile('/src/d06/input.txt');
     // P1:  352151
     // P2:  1601616884019
-    log('P1: ', p12(s, 80));
-    log('P2: ', p12(s, 256));
+    util.log('P1: ', p12(s, 80));
+    util.log('P2: ', p12(s, 256));
 }
+main();

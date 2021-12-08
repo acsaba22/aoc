@@ -1,8 +1,5 @@
 import * as util from '../util.js'
 
-declare function log(...args: any[]): void;
-declare function loadFile(fname: string): Promise<string>
-
 const N = 5
 const N2 = N * N
 const NI = [0, 1, 2, 3, 4]
@@ -57,7 +54,7 @@ function takeCard(seq: number[]): [Card, number[]] {
 
 
 export async function main() {
-  let s: string = await loadFile('/src/d04/input.txt')
+  let s: string = await util.loadFile('/src/d04/input.txt')
 
   let lines: string[] = s.split('\n')
   let nums: number[] = lines[0].split(',').map(s => Number(s))
@@ -79,7 +76,7 @@ export async function main() {
       let win = card.mark(num)
       if (win) {
         if (first || cards.length == 1) {
-          log((first ? 'P1: ' : 'P2: '), card.unmarkedSum() * num)
+          util.log((first ? 'P1: ' : 'P2: '), card.unmarkedSum() * num)
           first = false
         }
         cards.splice(i, 1)
@@ -91,3 +88,5 @@ export async function main() {
   // P1:  50008
   // P2:  17408
 }
+
+main()

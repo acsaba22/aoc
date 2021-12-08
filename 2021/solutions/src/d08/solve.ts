@@ -1,8 +1,5 @@
 import * as util from '../util.js'
 
-declare function log(...args: any[]): void;
-declare function loadFile(fname: string): Promise<string>
-
 type digit = string[]
 
 function contains(d1: digit, d2: digit): boolean {
@@ -19,7 +16,7 @@ function digits(s: string): digit[] {
 }
 
 export async function main() {
-  let s: string = await loadFile('/src/d08/input.txt')
+  let s: string = await util.loadFile('/src/d08/input.txt')
   let p1 = 0
   let p2 = 0
   for (let line of s.trim().split('\n')) {
@@ -60,6 +57,8 @@ export async function main() {
     var qdigits = question.map(x=>x.join(''))
     p2 += val[qdigits[0]] * 1000 + val[qdigits[1]] * 100 + val[qdigits[2]] * 10 + val[qdigits[3]]
   }
-  log('P1: ', p1) // 488
-  log('P2: ', p2) // 1040429
+  util.log('P1: ', p1) // 488
+  util.log('P2: ', p2) // 1040429
 }
+
+main()

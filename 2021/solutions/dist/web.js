@@ -1,13 +1,12 @@
+import * as util from './util.js';
 import React from "react";
 import ReactDOM from "react-dom";
-import { main } from "./solve.js";
-const gThis = globalThis;
-gThis.log = function (...args) {
+util.env.log = function (...args) {
     console.log(...args);
     const s = args.map(x => x.toString()).join(' ');
     globalRootDiv.addLog(s);
 };
-gThis.loadFile = function (fname) {
+util.env.loadFile = function (fname) {
     return fetch(fname)
         .then(response => {
         if (response.ok)
@@ -39,4 +38,3 @@ class RootDiv extends React.Component {
     }
 }
 ReactDOM.render(React.createElement(RootDiv, null), document.getElementById('root'));
-main();

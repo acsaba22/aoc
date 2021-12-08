@@ -1,5 +1,4 @@
-declare function log(...args: any[]): void;
-declare function loadFile(fname: string): Promise<string>
+import * as util from '../util.js'
 
 function p12(s:string, rounds:number): number {
   let buckets = Array(9).fill(0)
@@ -13,9 +12,11 @@ function p12(s:string, rounds:number): number {
 }
 
 export async function main() {
-  let s: string = await loadFile('/src/d06/input.txt')
+  let s: string = await util.loadFile('/src/d06/input.txt')
   // P1:  352151
   // P2:  1601616884019
-  log('P1: ', p12(s, 80))
-  log('P2: ', p12(s,256))
+  util.log('P1: ', p12(s, 80))
+  util.log('P2: ', p12(s,256))
 }
+
+main()

@@ -1,5 +1,4 @@
-declare function log(...args: any[]) : void;
-declare function loadFile(fname: string): Promise<string>
+import * as util from '../util.js'
 
 function p1(nums: number[]) {
   let increases: number[] = nums.slice(1).map((v, i) => nums[i] < v ? 1 : 0)
@@ -11,9 +10,11 @@ function p2(nums: number[]) {
 }
 
 export async function main() {
-  let s: string = await loadFile('/src/d01/input.txt')
+  let s: string = await util.loadFile('/src/d01/input.txt')
   let input: number[] = s.trim().split('\n').map((s) => Number(s))
 
-  log("P1: ", p1(input)) // 1557
-  log("P2: ", p2(input)) // 1608
+  util.log("P1: ", p1(input)) // 1557
+  util.log("P2: ", p2(input)) // 1608
 }
+
+main()

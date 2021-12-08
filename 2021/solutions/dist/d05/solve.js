@@ -36,7 +36,7 @@ class Ocean {
     }
     print() {
         for (let i = 0; i < N; i++) {
-            log(this.floor.slice(i * N, (i + 1) * N).map(x => x ? String(x) : '.').join(''));
+            util.log(this.floor.slice(i * N, (i + 1) * N).map(x => x ? String(x) : '.').join(''));
         }
     }
 }
@@ -57,8 +57,9 @@ function p12(s, diagonalToo) {
     return ocean.floor.map(x => 1 < x ? 1 : 0).reduce((a, b) => a + b);
 }
 export async function main() {
-    let s = await loadFile('/src/d05/input.txt');
+    let s = await util.loadFile('/src/d05/input.txt');
     N = maxNum(s) + 1;
-    log('P1: ', p12(s, false)); // 7142
-    log('P2: ', p12(s, true)); // 20012
+    util.log('P1: ', p12(s, false)); // 7142
+    util.log('P2: ', p12(s, true)); // 20012
 }
+main();

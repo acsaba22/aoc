@@ -1,16 +1,14 @@
+import * as util from './util.js'
 import React from "react";
 import ReactDOM from "react-dom"
-import { main } from "./solve.js"
 
-const gThis: any = globalThis
-
-gThis.log = function (...args: any[]) {
+util.env.log = function (...args: any[]) {
   console.log(...args)
   const s = args.map(x => x.toString()).join(' ')
   globalRootDiv.addLog(s)
 }
 
-gThis.loadFile = function (fname: string): Promise<string> {
+util.env.loadFile = function (fname: string): Promise<string> {
   return fetch(fname)
     .then(response => {
       if (response.ok)
@@ -58,5 +56,3 @@ ReactDOM.render(
   <RootDiv />,
   document.getElementById('root')
 )
-
-main()

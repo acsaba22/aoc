@@ -1,8 +1,5 @@
 import * as util from '../util.js'
 
-declare function log(...args: any[]): void;
-declare function loadFile(fname: string): Promise<string>
-
 let N = 0
 
 type Coord = number
@@ -54,7 +51,7 @@ class Ocean {
 
   print() {
     for (let i = 0; i < N; i++) {
-      log(this.floor.slice(i * N, (i + 1) * N).map(x => x? String(x):'.').join(''))
+      util.log(this.floor.slice(i * N, (i + 1) * N).map(x => x? String(x):'.').join(''))
     }
   }
 }
@@ -78,8 +75,10 @@ function p12(s: string, diagonalToo: boolean) : number {
 }
 
 export async function main() {
-  let s: string = await loadFile('/src/d05/input.txt')
+  let s: string = await util.loadFile('/src/d05/input.txt')
   N = maxNum(s) + 1
-  log('P1: ', p12(s, false)) // 7142
-  log('P2: ', p12(s, true))  // 20012
+  util.log('P1: ', p12(s, false)) // 7142
+  util.log('P2: ', p12(s, true))  // 20012
 }
+
+main()

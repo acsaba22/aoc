@@ -1,5 +1,4 @@
-declare function log(...args: any[]): void;
-declare function loadFile(fname: string): Promise<string>
+import * as util from '../util.js'
 
 function p12(s:string, rounds:number): number {
   let buckets = Array(9).fill(0)
@@ -13,12 +12,12 @@ function p12(s:string, rounds:number): number {
 }
 
 export async function main() {
-  let s: string = await loadFile('/src/d07/input.txt')
+  let s: string = await util.loadFile('/src/d07/input.txt')
   let v = s.split(',').map(x => Number(x))
   v.sort((a, b) => a - b)
   let median = v[v.length/2-1]
   let p1 = v.reduce((a, x) => a + Math.abs(x-median), 0)
-  log('P1: ', p1) // 345035
+  util.log('P1: ', p1) // 345035
 
   let maxVal = v[v.length-1]
   let p2Totals = [...Array(maxVal).keys()].map(
@@ -28,5 +27,7 @@ export async function main() {
     }, 0)
   )
   let p2 = Math.min(...p2Totals)
-  log('P2: ', p2) // 97038163
+  util.log('P2: ', p2) // 97038163
 }
+
+main()

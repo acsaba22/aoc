@@ -45,7 +45,7 @@ function takeCard(seq) {
     return [new Card(seq.slice(0, N2)), seq.slice(N2)];
 }
 export async function main() {
-    let s = await loadFile('/src/d04/input.txt');
+    let s = await util.loadFile('/src/d04/input.txt');
     let lines = s.split('\n');
     let nums = lines[0].split(',').map(s => Number(s));
     let seq = lines.slice(2).join(' ').match(/[^ ]+/g).map(s => Number(s));
@@ -63,7 +63,7 @@ export async function main() {
             let win = card.mark(num);
             if (win) {
                 if (first || cards.length == 1) {
-                    log((first ? 'P1: ' : 'P2: '), card.unmarkedSum() * num);
+                    util.log((first ? 'P1: ' : 'P2: '), card.unmarkedSum() * num);
                     first = false;
                 }
                 cards.splice(i, 1);
@@ -76,3 +76,4 @@ export async function main() {
     // P1:  50008
     // P2:  17408
 }
+main();

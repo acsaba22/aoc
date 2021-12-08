@@ -1,7 +1,4 @@
-import { type } from "os"
-
-declare function log(...args: any[]) : void;
-declare function loadFile(fname: string): Promise<string>
+import * as util from '../util.js'
 
 function p1(lines: string[]) {
   let x = 0
@@ -15,7 +12,7 @@ function p1(lines: string[]) {
     const [d, n] = l.split(' ');
     move[d](Number(n))
   }
-  log('P1: ', x * y) // 1882980
+  util.log('P1: ', x * y) // 1882980
 }
 
 function p2(lines: string[]) {
@@ -34,12 +31,14 @@ function p2(lines: string[]) {
     let [d, n] = l.split(' ')
     move.get(d)!(Number(n))
   }
-  log('P2: ', x * y) // 1882980
+  util.log('P2: ', x * y) // 1882980
 }
 
 export async function main() {
-  let s: string = await loadFile('/src/d02/input.txt')
+  let s: string = await util.loadFile('/src/d02/input.txt')
   let lines = s.trim().split('\n')
   p1(lines)
   p2(lines)
 }
+
+main()

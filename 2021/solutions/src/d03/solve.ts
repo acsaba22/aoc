@@ -1,7 +1,4 @@
-import { type } from "os"
-
-declare function log(...args: any[]): void;
-declare function loadFile(fname: string): Promise<string>
+import * as util from '../util.js'
 
 type bits = number[];
 
@@ -16,7 +13,7 @@ function p1(lines: bits[]) {
     l.forEach((v, i) => { counts[i] += v })
   })
   let res = bitsToNum(counts.map(v => Number(n - v <= v)))
-  log('P1: ', res * ((1 << bitNum) - res - 1))
+  util.log('P1: ', res * ((1 << bitNum) - res - 1))
 }
 
 function rating(lines: bits[], criteria: (count: number, len: number) => boolean): number {
@@ -33,13 +30,15 @@ function rating(lines: bits[], criteria: (count: number, len: number) => boolean
 function p2(lines: bits[]) {
   let oxygen = rating(lines, (count, len) => len / 2 <= count)
   let co2 = rating(lines, (count, len) => count < len / 2)
-  log('P2: ', oxygen * co2)
+  util.log('P2: ', oxygen * co2)
 }
 
 export async function main() {
-  let s: string = await loadFile('/src/d03/input.txt')
+  let s: string = await util.loadFile('/src/d03/input.txt')
   let bits = s.trim().split('\n').map(toBits)
 
   p1(bits) // 3148794
   p2(bits) // 2795310
 }
+
+main()
