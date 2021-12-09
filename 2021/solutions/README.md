@@ -13,7 +13,7 @@ First insall npm, typescript, node.
 Run like this:
 ```
 $ cd 2021/solutions
-$ node dist/d01/main.js
+$ node dist/main.js 01
 ...
 ```
 
