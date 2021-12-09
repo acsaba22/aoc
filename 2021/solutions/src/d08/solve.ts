@@ -60,5 +60,3 @@ export async function main() {
   util.log('P1: ', p1) // 488
   util.log('P2: ', p2) // 1040429
 }
-
-main()

@@ -40,5 +40,3 @@ export async function main() {
   p1(lines)
   p2(lines)
 }
-
-main()

@@ -30,4 +30,3 @@ export async function main() {
   util.log('P2: ', p2) // 97038163
 }
 
-main()

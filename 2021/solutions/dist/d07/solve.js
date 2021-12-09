@@ -24,4 +24,3 @@ export async function main() {
     let p2 = Math.min(...p2Totals);
     util.log('P2: ', p2); // 97038163
 }
-main();

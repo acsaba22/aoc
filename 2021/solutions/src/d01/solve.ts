@@ -15,6 +15,5 @@ export async function main() {
 
   util.log("P1: ", p1(input)) // 1557
   util.log("P2: ", p2(input)) // 1608
+  util.log('hello')
 }
-
-main()

@@ -37,4 +37,15 @@ class RootDiv extends React.Component {
         return React.createElement("div", null, rows);
     }
 }
-ReactDOM.render(React.createElement(RootDiv, null), document.getElementById('root'));
+async function run() {
+    ReactDOM.render(React.createElement(RootDiv, null), document.getElementById('root'));
+    const urlParams = new URLSearchParams(window.location.search);
+    const d = urlParams.get('d');
+    if (d == null || !/^\d{2}$/.test(d)) {
+        throw new Error('Specify ?d=NN');
+    }
+    const path = `./d${d}/solve.js`;
+    const solve = await import(path);
+    solve.main();
+}
+run().catch(e => util.log('Failed: ', e));

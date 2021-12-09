@@ -40,5 +40,3 @@ export async function main() {
   p1(bits) // 3148794
   p2(bits) // 2795310
 }
-
-main()

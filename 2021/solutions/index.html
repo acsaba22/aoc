@@ -21,20 +21,6 @@
   <div id="root">
   </div>
   <script src="/dist/web.js" type="module"></script>
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const d = urlParams.get('d')
-    if (/[0-9]{2}/.test(d)) {
-      let script = document.createElement('script');
-      script.src = '/dist/d' + d + '/solve.js'
-      script.type = 'module'
-      document.body.appendChild(script)
-    } else {
-      let err = document.createElement('div');
-      err.innerHTML = 'Specify ?d=NN'
-      document.body.appendChild(err)
-    }
-  </script>
 </body>
 
 </html>

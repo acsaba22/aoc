@@ -76,4 +76,3 @@ export async function main() {
     // P1:  50008
     // P2:  17408
 }
-main();

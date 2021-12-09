@@ -80,5 +80,3 @@ export async function main() {
   util.log('P1: ', p12(s, false)) // 7142
   util.log('P2: ', p12(s, true))  // 20012
 }
-
-main()

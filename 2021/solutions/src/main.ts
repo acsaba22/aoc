@@ -18,7 +18,8 @@ async function run() {
     return
   }
   const path = `./d${args[0]}/solve.js`
-  await import(path);
+  const solve = await import(path);
+  solve.main()
 }
 
 run()
