@@ -10,6 +10,9 @@ util.env.loadFile = async function (fname: string): Promise<string> {
   return b.toString()
 }
 
+util.env.clear = async function (): Promise<void> {
+  console.clear()
+}
 
 async function run() {
   var args = process.argv.slice(2);

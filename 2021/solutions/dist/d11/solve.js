@@ -30,14 +30,27 @@ class Table {
             util.log(this.v.slice(y * this.m, (y + 1) * this.m).map(x => String(x)).join(''));
         }
     }
+    draw() {
+        this.v.forEach((vv, k) => {
+            let y = Math.floor(k / this.m);
+            let x = k % this.m;
+            let color = `${vv}0`;
+            if (9 < vv) {
+                color = "FF";
+            }
+            util.env.rect(y, x, this.n, this.m, color);
+        });
+    }
 }
 export async function main() {
     let s = await util.loadFile('/src/d11/input.txt');
     let lines = s.trim().split('\n').map(x => x.trim().split('').map(y => Number(y)));
     let t = new Table(lines);
+    util.env.showCanvas();
     let p1 = 0;
     let p2 = 0;
     for (let round = 0; p2 == 0; round++) {
+        util.env.clear();
         let flashed = Array(t.nm).fill(false);
         t.v = t.v.map(x => x + 1);
         let flashedNow = false;
@@ -58,11 +71,15 @@ export async function main() {
                 }
             }
         } while (flashedNow);
+        t.draw();
+        util.log('P1: ', p1);
+        util.log('P2: ', round + 1);
         t.v = t.v.map(x => 10 <= x ? 0 : x);
         if (roundFlashNum == t.nm) {
             p2 = round + 1;
         }
+        await util.pause(100);
     }
-    util.log('P1: ', p1); // 1613
-    util.log('P2: ', p2); // 510
+    // P1: 1613
+    // P2: 510
 }

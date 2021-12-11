@@ -7,6 +7,9 @@ util.env.loadFile = async function (fname) {
     let b = fs.readFileSync('.' + fname);
     return b.toString();
 };
+util.env.clear = async function () {
+    console.clear();
+};
 async function run() {
     var args = process.argv.slice(2);
     if (args.length != 1 || !/^\d{2}$/.test(args[0])) {

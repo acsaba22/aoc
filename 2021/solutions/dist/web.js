@@ -6,6 +6,10 @@ util.env.log = function (...args) {
     const s = args.map(x => x.toString()).join(' ');
     globalRootDiv.addLog(s);
 };
+util.env.clear = function () {
+    console.log('================');
+    globalRootDiv.clear();
+};
 util.env.loadFile = function (fname) {
     return fetch(fname)
         .then(response => {
@@ -21,6 +25,9 @@ util.env.loadFile = function (fname) {
         throw response;
     });
 };
+util.env.pause = function (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms * pauseMultiplier));
+};
 let globalRootDiv;
 // globalRootDiv.setState({})
 class RootDiv extends React.Component {
@@ -32,14 +39,33 @@ class RootDiv extends React.Component {
     addLog(s) {
         this.setState({ logs: this.state.logs.concat([s]) });
     }
+    clear() {
+        this.setState({ logs: [] });
+    }
     render() {
         let rows = this.state.logs.map((s, i) => React.createElement("p", { key: i }, s));
         return React.createElement("div", null, rows);
     }
 }
+util.env.showCanvas = function () {
+    let canvas = document.querySelector("canvas");
+    canvas.style.display = 'block';
+    let context = canvas.getContext("2d");
+    let w = canvas.width;
+    let h = canvas.height;
+    util.env.rect = (y, x, n, m, color) => {
+        context.fillStyle = `#${color}${color}${color}`;
+        context.fillRect(x / m * w, y / n * h, w / m, h / n);
+    };
+};
+let pauseMultiplier = 1;
 async function run() {
     ReactDOM.render(React.createElement(RootDiv, null), document.getElementById('root'));
     const urlParams = new URLSearchParams(window.location.search);
+    const p = urlParams.get('pauseMultiplier');
+    if (p != null) {
+        pauseMultiplier = Number(p);
+    }
     const d = urlParams.get('d');
     if (d == null || !/^\d{2}$/.test(d)) {
         throw new Error('Specify ?d=NN');

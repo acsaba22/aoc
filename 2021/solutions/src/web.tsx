@@ -8,6 +8,11 @@ util.env.log = function (...args: any[]) {
   globalRootDiv.addLog(s)
 }
 
+util.env.clear = function () {
+  console.log('================')
+  globalRootDiv.clear()
+}
+
 util.env.loadFile = function (fname: string): Promise<string> {
   return fetch(fname)
     .then(response => {
@@ -23,6 +28,11 @@ util.env.loadFile = function (fname: string): Promise<string> {
       throw response;
     });
 }
+
+util.env.pause = function (ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms*pauseMultiplier));
+}
+
 
 let globalRootDiv: RootDiv;
 
@@ -45,6 +55,10 @@ class RootDiv extends React.Component {
     this.setState({ logs: this.state.logs.concat([s]) })
   }
 
+  clear() {
+    this.setState({logs: []})
+  }
+
   render() {
     let rows = this.state.logs.map((s, i) => <p key={i}>{s}</p>)
     return <div>{rows}</div>
@@ -52,6 +66,19 @@ class RootDiv extends React.Component {
 
 }
 
+util.env.showCanvas = function () {
+  let canvas: HTMLCanvasElement = document.querySelector("canvas")!
+  canvas.style.display = 'block'
+  let context = canvas.getContext("2d")!
+  let w = canvas.width
+  let h = canvas.height
+  util.env.rect = (y,x,n,m,color) => {
+    context.fillStyle = `#${color}${color}${color}`
+    context.fillRect(x/m*w, y/n*h, w/m, h/n)
+  }
+}
+
+let pauseMultiplier = 1
 
 async function run() {
   ReactDOM.render(
@@ -60,6 +87,12 @@ async function run() {
   )
 
   const urlParams = new URLSearchParams(window.location.search);
+
+  const p = urlParams.get('pauseMultiplier')
+  if (p != null) {
+    pauseMultiplier = Number(p)
+  }
+
   const d = urlParams.get('d')
   if (d == null || !/^\d{2}$/.test(d)) {
     throw new Error('Specify ?d=NN')
