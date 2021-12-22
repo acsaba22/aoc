@@ -12,6 +12,7 @@ export class Environment {
         this.clear = () => assert(false, 'clear not defined');
         this.pause = (ms) => new Promise(resolve => resolve());
         this.showCanvas = () => void 0;
+        this.setCanvasSize = (n, m) => void 0;
         this.rect = (y, x, n, m, color) => void 0;
     }
 }

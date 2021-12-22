@@ -12,6 +12,7 @@ export class Environment {
   clear: () => void
   pause: (ms: number) => Promise<void>
   showCanvas: () => void
+  setCanvasSize: (n:number, m:number) => void
   rect: (y:number, x:number, n:number, m:number, color:string) => void
   constructor() {
     this.log = (...args: any[]) => assert(false, 'log not defined')
@@ -21,6 +22,7 @@ export class Environment {
     this.clear = () => assert(false, 'clear not defined')
     this.pause = (ms) => new Promise(resolve => resolve());
     this.showCanvas = () => void 0
+    this.setCanvasSize = (n,m) => void 0
     this.rect = (y,x,n,m,color) => void 0
   }
 }

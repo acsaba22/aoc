@@ -53,8 +53,19 @@ util.env.showCanvas = function () {
     let context = canvas.getContext("2d");
     let w = canvas.width;
     let h = canvas.height;
+    util.env.setCanvasSize = (n, m) => {
+        h = n;
+        w = m;
+        canvas.height = h;
+        canvas.width = w;
+    };
     util.env.rect = (y, x, n, m, color) => {
-        context.fillStyle = `#${color}${color}${color}`;
+        if (color.startsWith('#')) {
+            context.fillStyle = color;
+        }
+        else {
+            context.fillStyle = `#${color}${color}${color}`;
+        }
         context.fillRect(x / m * w, y / n * h, w / m, h / n);
     };
 };
