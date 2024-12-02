@@ -26,9 +26,7 @@ bool readvec(ifstream &ifs, vector<int> &vec) {
 
 // return 0 or 1 for easy summing
 int safe(vector<int> &vec) {
-    if (!(2 <= vec.size() && vec[0] != vec[1])) {
-      assert(2 <= vec.size());
-    }
+    assert(2 <= vec.size());
     int direction = (vec[0] < vec[1] ?1 : -1);
 
     int ret = 1;
