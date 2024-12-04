@@ -39,7 +39,7 @@ struct Matrix {
 };
 
 // P1 = 2504
-// p2 546 too low
+// P2 = 1923
 int main() {
   Matrix m;
   m.readFile("input.txt");
