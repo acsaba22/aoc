@@ -29,7 +29,7 @@ struct Point {
   int y = -1;
   int x = -1;
 
-  auto operator<=>(const Point&) const = default;
+  // auto operator<=>(const Point&) const = default;
 
 
   Point operator+(const Point& p2) const {
@@ -107,6 +107,14 @@ struct Matrix {
   int nx = 0, ny = 0;
   vector<string> m;
 
+  void init(int ny, int nx, char c) {
+    this->ny = ny;
+    this->nx = nx;
+    string s(nx, c);
+    for (int i = 0; i < ny; i++) {
+      m.push_back(s);
+    }
+  }
   void readFile(const string& fname) {
     ifstream fin(fname);
     readFile(fin);
@@ -168,113 +176,79 @@ std::ostream& operator<<(std::ostream& outs, const Matrix& m) {
 }
 
 
-// P1 = 85420
-// P2 = 492
+// P1 = 260
+// P2 = 24,48
 int main() {
-  Matrix m;
-  m.readFile("input.txt");
+  // ifstream fin("example.txt");
+  // NY = 7;
+  // NX = 7;
+  // int K = 12;
 
-  long p1 = 0;
-  long p2 = 0;
+  ifstream fin("input.txt");
+  NY = 71;
+  NX = 71;
+  int K = 1024;
 
-  Point start, finish;
-  for (Idx i = 0; i < NXY; i++) {
-    if (m.val(i) == 'S') {
-      start = ToPoint(i);
-    }
-    if (m.val(i) == 'E') {
-      finish = ToPoint(i);
-    }
+  NXY = NX * NY;
+
+  string line;
+  vector<Point> corrupted;
+  char comma;
+  Point p;
+  while (fin >> p.x >> comma >> p.y) {
+    assert(comma == ',');
+    corrupted.push_back(p);
+    // cout << p << endl;
   }
-  assert(start.isInside());
-  assert(finish.isInside());
+  assert(K <= corrupted.size());
 
-  struct State {
-    Point p;
-    int dir; // NESW
+  auto solve = [&corrupted](int k) {
+    Matrix m;
+    m.init(NY, NX, '.');
 
-    auto operator<=>(const State&) const = default;
-  };
+    for (int i = 0; i < k; i++) {
+      m.set(corrupted[i], '#');
+    }
 
-  map<State, long> scores;
-  set<State> visited;
-  set<State> toVisit;
-  map<State, vector<State>> backlinks;
-  scores[State{start, 1}] = 0;
-  toVisit.insert(State{start, 1});
+    unordered_map<Idx, int> sol;
+    struct State {
+      Point p;
+      int steps;
+    };
 
-  auto add = [&scores, &toVisit, &backlinks](State state, long score, State backlink) {
-      auto it = scores.find(state);
-      if (it == scores.end() || score <= it->second) {
-        if (score < it->second) {
-          backlinks[state].clear();
+    deque<State> bfs = {{{0, 0}, 0}};
+
+    while (!bfs.empty()) {
+      // cout << m << endl;
+      State state = bfs[0];
+      bfs.pop_front();
+      m.set(state.p, 'O');
+      sol[state.p.toIdx()] = state.steps;
+
+      for (auto n: state.p.neighbours4()) {
+        if (m.val(n) == '.') {
+          bfs.push_back({n, state.steps + 1});
+          m.set(n, 'T');
         }
-        scores[state] = score;
-        toVisit.insert(state);
-        backlinks[state].push_back(backlink);
       }
-
+    }
+    return sol[NXY-1];
   };
 
-  bool found = false;
-  long lastScore = -1;
-  while (!toVisit.empty() && (!found || lastScore <= p1)) {
-    State minState;
-    long minScore = LONG_MAX;
-    for (auto state: toVisit) {
-      long score = scores[state];
-      if (score < minScore) {
-        minScore = score;
-        minState = state;
-      }
+  long p1 = solve(K);
+
+  cout << "P1 = " << p1 << endl;
+
+  for (int i = K; i <= corrupted.size(); i++) {
+    if (i%100 == 0) {
+      cout << i << endl;
     }
-    toVisit.erase(minState);
-    visited.insert(minState);
-
-    if (minState.p == finish) {
-      p1 = minScore;
-      found = true;
-    }
-
-    Point neigh = minState.p;
-    neigh += Directions4[minState.dir];
-    if (neigh.isInside() && m.val(neigh) != '#') {
-      add(State{neigh, minState.dir}, minScore + 1, minState);
-    }
-
-    add(State{minState.p, (minState.dir + 1)%4}, minScore + 1000, minState);
-    add(State{minState.p, (minState.dir + 3)%4}, minScore + 1000, minState);
-
-    lastScore = minScore;
-  }
-
-  set<Point> onPath;
-  set<State> backToVisit;
-  set<State> backVisited;
-
-  backToVisit.insert(State{finish, 0});
-  backToVisit.insert(State{finish, 1});
-  backToVisit.insert(State{finish, 2});
-  backToVisit.insert(State{finish, 3});
-
-  while (!backToVisit.empty()) {
-    auto it = backToVisit.begin();
-    State state = *it;
-    backToVisit.erase(it);
-    backVisited.insert(state);
-    onPath.insert(state.p);
-
-    for (State backlink: backlinks[state]) {
-      if (backVisited.find(backlink) == backVisited.end()) {
-        backToVisit.insert(backlink);
-      }
+    int sol = solve(i);
+    if (sol == 0) {
+      Point p = corrupted[i-1];
+      cout << "P2 = " << p.x << "," << p.y << endl;
+      break;
     }
   }
-
-  onPath.insert(start);
-  p2 = onPath.size();
-
-  cout << "P1 = " << p1 << "\n";
-  cout << "P2 = " << p2 << "\n";
   return 0;
 }
