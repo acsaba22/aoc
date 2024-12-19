@@ -239,16 +239,18 @@ int main() {
 
   cout << "P1 = " << p1 << endl;
 
-  for (int i = K; i <= corrupted.size(); i++) {
-    if (i%100 == 0) {
-      cout << i << endl;
-    }
-    int sol = solve(i);
+  int low = K, high = corrupted.size();
+  while (low < high) {
+    int middle = (low+high+1)/2;
+    int sol = solve(middle);
     if (sol == 0) {
-      Point p = corrupted[i-1];
-      cout << "P2 = " << p.x << "," << p.y << endl;
-      break;
+      high = middle - 1;
+    } else {
+      low = middle;
     }
   }
+  Point p2 = corrupted[low];
+    cout << "P2 = " << p2.x << "," << p2.y << endl;
+
   return 0;
 }
