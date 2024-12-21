@@ -176,10 +176,28 @@ std::ostream& operator<<(std::ostream& outs, const Matrix& m) {
 }
 
 
+///////// STARTS HERE
+
+typedef unordered_map<Idx, int> distanceMap;
+int D(distanceMap& distances, Idx i) {
+  auto dit = distances.find(i);
+  if (dit != distances.end()) {
+    return dit->second;
+  }
+  return INT_MAX;
+};
+
+
 // P1: 1417
+// P2: 1014683
 int main() {
   Matrix m;
+
+  // m.readFile("example.txt");
+  // int betteringLimit = 10;
+
   m.readFile("input.txt");
+  int betteringLimit = 100;
 
   Idx startIdx = -1, endIdx = -1;
   for (Idx i = 0; i < NXY; i++) {
@@ -191,20 +209,14 @@ int main() {
     }
   }
 
-  typedef unordered_map<Idx, int> distanceMap;
-  unordered_map<Idx, int> distances;
-  auto D = [&distances](Idx i) {
-    auto dit = distances.find(i);
-    if (dit != distances.end()) {
-      return dit->second;
-    }
-    return INT_MAX;
-  };
+  distanceMap distFromStart;
+  distanceMap distToEnd;
+
   typedef pair<int, Idx> distIdx ;
-  auto doBfs = [&distances, &D, &m](Idx start, int startDist) {
+  auto doBfs = [&m](distanceMap& distances, Idx start) {
     set<distIdx> bfs;
-    distances[start] = startDist;
-    bfs.insert({startDist, start});
+    distances[start] = 0;
+    bfs.insert({0, start});
     while (!bfs.empty()) {
       auto it = bfs.begin();
       int dist = it->first;
@@ -214,7 +226,7 @@ int main() {
       bfs.erase(it);
       for (Idx neigh: Neighbours4(idx)) {
         if (m.val(neigh) != '#') {
-          int neighD = D(neigh);
+          int neighD = D(distances, neigh);
           if (dist1 < neighD) {
             distances[neigh] = dist1;
             bfs.erase({neighD, neigh});
@@ -224,36 +236,48 @@ int main() {
       }
     }
   };
-  doBfs(startIdx, 0);
-  int endDist = D(endIdx);
-  cout << ToPoint(endIdx) << ": " << endDist << endl;
+
+  doBfs(distFromStart, startIdx);
+  doBfs(distToEnd, endIdx);
+  int bestPathDist = D(distFromStart, endIdx);
+
+  // cout << ToPoint(endIdx) << ": " << bestPathDist << endl;
+  // cout << ToPoint(startIdx) << ": " << D(distToEnd, startIdx) << endl;
 
   int p1 = 0;
-  for (Idx cheatStart=0; cheatStart<NXY; cheatStart++) {
-    if (m.val(cheatStart) != '#') {
-      continue;
-    }
-    int bestNeighDist = INT_MAX;
-    for (Idx neigh: Neighbours4(cheatStart)) {
-      int d = D(neigh);
-      if (d < bestNeighDist) {
-        bestNeighDist = d;
+
+  auto searchCheats = [&m, &distFromStart, &distToEnd, &bestPathDist](
+      int maxCheatDist, int betteringLimit) {
+    int ret = 0;
+    for (Idx cheatStart = 0; cheatStart < NXY; cheatStart++) {
+      if (m.val(cheatStart) == '#') {
+        continue;
+      }
+      for (Idx cheatEnd = max(0, cheatStart - maxCheatDist*NX-1);
+          cheatEnd < min(NXY, cheatStart + maxCheatDist*NX+1);
+          cheatEnd++) {
+        if (m.val(cheatEnd) == '#') {
+          continue;
+        }
+        Point diff = ToPoint(cheatEnd) - ToPoint(cheatStart);
+        int len = abs(diff.x) + abs(diff.y);
+        if (len <= maxCheatDist) {
+
+          int newBest = D(distFromStart, cheatStart) + len + D(distToEnd, cheatEnd);
+          int bettering = bestPathDist - newBest;
+
+          if (betteringLimit <= bettering) {
+            // cout << "sol: " << bettering << " | " << ToPoint(cheatStart) << endl;
+            ret++;
+          }
+        }
       }
     }
-    if (bestNeighDist == INT_MAX) {
-      continue;
-    }
-    if (bestNeighDist + 1 < D(cheatStart)) {
-      unordered_map<Idx, int> distOrig = distances;
-      doBfs(cheatStart, bestNeighDist + 1);
-      int newEndDist = D(endIdx);
-      if (100 <= endDist - newEndDist) {
-        cout << "sol: " << endDist - newEndDist << " | " << ToPoint(cheatStart) << endl;
-        p1++;
-      }
-      distances.swap(distOrig);
-    }
-  }
-  cout << "P1: " << p1 << endl;
+    return ret;
+  };
+
+  cout << "P1: " << searchCheats(2, betteringLimit) << endl;
+  cout << "P2: " << searchCheats(20, betteringLimit) << endl;
+
   return 0;
 }
