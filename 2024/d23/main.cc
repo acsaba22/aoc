@@ -55,12 +55,15 @@ int main() {
   int count = 0;
   int step1 = 0;
   for (auto p1 = graph.begin(); p1 != graph.end(); p1++) {
-    reportProgress("Expand ", graph.size(), step1++);
+    // reportProgress("Expand ", graph.size(), step1++);
 
     string p1n = p1->first;
     auto p2 = p1;
     for (p2++; p2 != graph.end(); p2++) {
       string p2n = p2->first;
+      if (graph[p1n].count(p2n) == 0) {
+        continue;
+      }
       auto p3 = p2;
       for (p3++; p3 != graph.end(); p3++) {
         string p3n = p3->first;
@@ -84,8 +87,12 @@ int main() {
 
     int step = 0;
     for (auto [name, members]: compontents) {
-      reportProgress("Expand ", compontents.size(), step++);
-      for (auto [newMember, neighbours]: graph) {
+      // reportProgress("Expand ", compontents.size(), step++);
+      auto lastMemberIt = graph.find(*members.rbegin());
+      assert(lastMemberIt != graph.end());
+      for (lastMemberIt++; lastMemberIt != graph.end(); lastMemberIt++) {
+        string newMember = lastMemberIt->first;
+        auto& neighbours = lastMemberIt->second;
         bool ok = 0 == members.count(newMember);
         for (auto origMember: members) {
           if (neighbours.count(origMember) == 0) {
