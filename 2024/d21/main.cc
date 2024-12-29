@@ -122,10 +122,10 @@ WorkCount NextLevel(WorkCount& workCount, Keyboard& nextKeyboard) {
         std::swap(toVisit[0], toVisit[1]);
         long cost2 = calcCost();
         if (fromCoor + Point{diff.y, 0} == nextKeyboard.nogo) {
-          cost = INT_MAX;
+          cost = LONG_MAX;
         }
         if (fromCoor + Point{0, diff.x} == nextKeyboard.nogo) {
-          cost2 = INT_MAX;
+          cost2 = LONG_MAX;
         }
         // bool okPath1 = from + diff.y == nogo?
         if (cost2 < cost) {
@@ -144,16 +144,16 @@ long solve(const string& fileName, int levels) {
 
   WorkCount workCount(NArrowKeys, {1,1,1,1,1}); // all zeros
 
-  PrintWork(workCount);
+  // PrintWork(workCount);
 
   for (int level = 0; level < levels; level++) {
     WorkCount nextCounts = NextLevel(workCount, arrowKeyboard);
     workCount.swap(nextCounts);
-    PrintWork(workCount);
+    // PrintWork(workCount);
   }
 
   WorkCount numericWork  = NextLevel(workCount, numpadKeyboard);
-  PrintWork(numericWork);
+  // PrintWork(numericWork);
 
   long complexity = 0;
   string line;
@@ -164,11 +164,11 @@ long solve(const string& fileName, int levels) {
     NumpadKeys lastKey = AKEYPAD;
     for (char c: line) {
       NumpadKeys nextKey = ToKeypadKey(c);
-      cout << numericWork[lastKey][nextKey] << " | ";
+      // cout << numericWork[lastKey][nextKey] << " | ";
       work += numericWork[lastKey][nextKey];
       lastKey = nextKey;
     }
-    cout << line << ": " << work << endl;
+    // cout << line << ": " << work << endl;
 
     complexity += numeric*work;
   }
@@ -178,19 +178,14 @@ long solve(const string& fileName, int levels) {
 }
 
 // P1: 162740
-// P2:
+// P2: 203640915832208
 int main() {
-  string file = "example.txt";
+  string file = "input.txt";
 
-  // long p1 = solve(file, 2);
-  // cout << "P1: " << p1 << endl;
+  long p1 = solve(file, 2);
+  cout << "P1: " << p1 << endl;
 
   long p2 = solve(file, 25);
   cout << "P2: " << p2 << endl;
-
-  // should be 154115708116294 for the example
-
-  // // for input 116045081626426 too low
-  // // for input 216045081626426 too high
   return 0;
 }
