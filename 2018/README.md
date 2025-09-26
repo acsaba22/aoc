@@ -54,14 +54,15 @@ Install the official Haskell extension:
 ### Interactive Development
 
 ```bash
+
+# run main executable
+cabal run
+
 # Start GHCi (interactive Haskell)
 ghci
 
 # Load a file in GHCi
-ghci> :load hello.hs
-ghci> main
-
-# Exit GHCi
-ghci> :quit
+ghci> :load playground/factorial.hs
+ghci> factorial 5
 ```
 
