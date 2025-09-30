@@ -1,5 +1,16 @@
 # Advent of Code 2018 in Haskell
 
+## Roadmap / ideas
+
+### Enable profiling for checking times
+
+```
+ghc -prof -fprof-auto -rtsopts playground/Gentle.hs
+./Gentle +RTS -p
+cabal build --enable-profiling
+cabal run --enable-profiling x2018 -- +RTS -p
+```
+
 ## Haskel Installation
 
 ### Install GHCup
