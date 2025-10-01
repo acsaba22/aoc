@@ -2,13 +2,23 @@
 
 ## Roadmap / ideas
 
-### Enable profiling for checking times
+### Enable profiling for time and memory
 
-```
-ghc -prof -fprof-auto -rtsopts playground/Gentle.hs
-./Gentle +RTS -p
-cabal build --enable-profiling
-cabal run --enable-profiling x2018 -- +RTS -p
+```bash
+ghc -prof -fprof-auto -rtsopts playground/GentleTree.hs
+
+#Summary in console
+./playground/GentleTree +RTS -s
+
+#timings in prof file
+./playground/GentleTree +RTS -p
+less GentleTree.prof
+
+# get memory
+./playground/GentleTree +RTS -p -hc
+hp2ps -c GentleTree.hp
+evince GentleTree.ps
+
 ```
 
 ## Haskel Installation
