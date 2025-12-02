@@ -1,6 +1,6 @@
 -- {-# LANGUAGE InstanceSigs #-}
 -- {-# LANGUAGE UndecidableInstances #-}
-module Main where
+module GentleTree where
 import Data.Bits (Bits(xor))
 import Data.Char (ord)
 
@@ -15,7 +15,7 @@ class ShowA a where
 showFunc :: (Num a, Show a) => a -> String
 showFunc x = show x
 
--- -- TODO(misi): ez miert nem megy?
+-- -- TODO(misi): ez miert nem megy? a
 -- instance (Num a, Show a) => ShowA a where
 --     showA x = show x
 
@@ -99,7 +99,8 @@ fastList n = fastListHelper n []
     fastListHelper 0 acc = acc
     fastListHelper n acc = fastListHelper (n - 1) (n : acc)
 
--- TODO(misi) ez nem kicsi... 
+-- Misi megoldasa: $!-el ki is kell ertekelni, hogy ne maradjon k+1
+-- azt mondta hogy ha nem length-et hanem sum-ot csinalunk akkor gyors es igaza volt.
 fastSmallList :: Int -> [Int]
 fastSmallList n = fastSmallListHelper 1 n
   where
@@ -107,13 +108,14 @@ fastSmallList n = fastSmallListHelper 1 n
     -- fastSmallListHelper k n = k : (fastSmallListHelper (k+1)) (n-1)
     fastSmallListHelper k n = k : (fastSmallListHelper $! (k+1)) (n-1)
 
-main :: IO ()
-main = do
+treeMain :: IO ()
+treeMain = do
     putStrLn "Hello from GentleTree!"
     -- putStrLn $ "outStrLen: " ++ show (length outStr1)
     -- putStrLn $ "outStrLen: " ++ show (length outStr2)
     -- putStrLn $ "outStrLen: " ++ show (length (take (10^7) (fastSmallList (10^8))))
-    putStrLn $ "outStrLen: " ++ show (sum (take (10^7) (fastSmallList (10^8))))
+    putStrLn $ "outStrLen: " ++ show (length (take (10^7) (fastSmallList (10^8))))
+    putStrLn $ "Tree: " ++ showTree2 (Branch (Branch (Leaf 1) (Leaf 2)) (Leaf 3))
 
     -- writeToFile outStr
     -- putStrLn $ "ShowA Int: " ++ showA (42 :: Int)

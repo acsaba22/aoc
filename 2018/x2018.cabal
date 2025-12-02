@@ -10,6 +10,9 @@ build-type:         Simple
 
 common warnings
     ghc-options: -Wall
+    default-extensions: InstanceSigs
+    default-language: Haskell2010
+    build-depends: base ^>=4.18.3.0
 
 executable x2018
     -- import:           warnings
@@ -32,7 +35,19 @@ executable x2018
     default-language: Haskell2010
 
 executable gentletree
-    main-is:          GentleTree.hs
+    -- import:           warnings
+    main-is:          GentleTreeMain.hs
+    other-modules:    GentleTree
     build-depends:    base ^>=4.18.3.0
     hs-source-dirs:   playground/
+    default-language: Haskell2010
+    default-extensions: InstanceSigs
+
+test-suite gentletree-test
+    -- import:           warnings
+    type:             exitcode-stdio-1.0
+    main-is:          GentleTreeSpec.hs
+    build-depends:    base ^>=4.18.3.0, hspec
+    hs-source-dirs:   playground/
+    other-modules:    GentleTree
     default-language: Haskell2010
