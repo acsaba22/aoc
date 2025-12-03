@@ -1,6 +1,6 @@
 import std
 
-print(-2 / 10)
+let fname = "input.txt"
 
 // TODO no named return :(
 def divMod(a, b) -> int, int:
@@ -15,7 +15,7 @@ var pos = 50
 var p1 = 0
 var p2 = 0
 
-let lines = check(read_file("input.txt"), "No file")
+let lines = check(read_file(fname), "No file")
 for(lines.tokenize("\n", " ")) line:
     print(line)
     let dirc = line[0]
