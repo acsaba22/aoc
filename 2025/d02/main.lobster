@@ -59,5 +59,5 @@ for(rangess):
     // let ends = map(endss) x: string_to_int(x)
     // print(ends)
 
-print("!!!!!!!!!!!!!!! P1: " + string(p1)) // 30608905813
-print("!!!!!!!!!!!!!!! P2: " + string(p2)) // 30608905813
+print("!!!!!!!!!!!!!!! P1: {p1}") // 30608905813
+print("!!!!!!!!!!!!!!! P2: {p2}") // 31898925685
