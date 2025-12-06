@@ -32,16 +32,21 @@ module Main (main) where
 -- newPos p ('R' : nums) = normalize $ p + read nums
 -- newPos _ _ = error "L or R"
 
-stops :: Int -> [String] -> [Int]
-stops p [] = [p]
-stops p (line : xs) = p' : stops p' xs
+stops :: Int -> [String] -> [(Int, Int)]
+stops p [] = [(p, 0)]
+stops pos (line : xs) = (pos'final, p2part) : stops pos'final xs
   where
-    p' = newPos line
+    pos'raw = newPos line
+    pos'final = pos'raw `mod` 100
+    rounds = pos'raw `div` 100
+    p2part = (
+      (abs rounds)
+      + (if pos == 0 && rounds < 0 then -1 else 0)
+      + (if pos'final == 0 && 0 < rounds then -1 else 0))
     newPos :: String -> Int
-    newPos ('L' : nums) = normalize $ p - read nums
-    newPos ('R' : nums) = normalize $ p + read nums
+    newPos ('L' : nums) = pos - read nums
+    newPos ('R' : nums) = pos + read nums
     newPos _ = error "L or R"
-    normalize = (`mod` 100)
 
 main :: IO ()
 main = do
@@ -53,5 +58,10 @@ main = do
   -- mapM_ print input
   mapM_ print $ stops 50 input
   -- print $ acsOsszeado 3 4 5
-  let p1 = length $ filter (== 0) $ stops 50 input
+  let s = stops 50 input
+  let p1 = length $ filter (== 0) $ map fst s
   putStrLn $ "!!!!!!! P1 " ++ show p1
+  let p2 = p1 + (sum $ map snd s)
+  putStrLn $ "!!!!!!! P2 " ++ show p2
+-- !!!!!!! P1 1066
+-- !!!!!!! P2 6223
