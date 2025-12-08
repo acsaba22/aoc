@@ -13,10 +13,22 @@ extra-doc-files:    CHANGELOG.md
 
 common warnings
     ghc-options: -Wall
+    default-language: GHC2021
+
+library
+    import:           warnings
+    hs-source-dirs:   util
+    exposed-modules:  Util
+    build-depends:    base ^>=4.18.3.0
 
 executable d01
     import:           warnings
+    hs-source-dirs:   d01
     main-is:          Main.hs
     build-depends:    base ^>=4.18.3.0
-    hs-source-dirs:   d01
-    default-language: GHC2021
+
+executable d02
+    import:           warnings
+    hs-source-dirs:   d02
+    main-is:          Main.hs
+    build-depends:    base ^>=4.18.3.0, extra, aoc2025
