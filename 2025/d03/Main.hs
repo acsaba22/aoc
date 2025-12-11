@@ -4,9 +4,9 @@ joltage :: Int -> String -> String
 joltage 0 _ = ""
 joltage digits s = ret
   where
-    -- TODO is this O(n)
+    -- this is O(n) but there is also a Text or ByteString if needed
     k = length s - digits + 1
-    -- TODO better way to find first?
+    -- better way to find first...
     (maxv, maxp) = maximum $ zip (take k s) (map (* (-1)) [0 :: Int ..])
     ret = [maxv] ++ joltage (digits - 1) (drop (-maxp + 1) s)
 

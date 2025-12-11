@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Data.List.Extra (split, trim, chunksOf)
+import Data.List.Extra (allSame, chunksOf, split, trim)
 -- import qualified Data.List.Extra as LE
 import Util (traceLabel)
 
@@ -8,7 +8,7 @@ parse :: String -> [(Int, Int)]
 parse fcontent = pairs
   where
     intervals = traceLabel "i" $ split (== ',') $ trim fcontent
-    
+
     parseInterval :: String -> (Int, Int)
     parseInterval s = case split (== '-') s of
       [x, y] -> (read x, read y)
@@ -16,29 +16,23 @@ parse fcontent = pairs
     pairs = map parseInterval intervals
 
 isRepeat :: Int -> Int -> Bool
-isRepeat repeatNum x = ret
+isRepeat repeatNum x
+  | (length s) `mod` repeatNum /= 0 = False
+  | otherwise = allSame $ chunksOf ((length s) `div` repeatNum) s
   where
     s = show x
-    -- TODO nem lehet mindent ret-nek hivni, allandoan shadowing van, tanacs?
-    ret = if (length s) `mod` repeatNum /= 0 then False else ret2
-      where
-        allSame :: Eq a => [a] -> Bool
-        allSame [] = True
-        allSame (a:as) = all ( == a) as
-        ret2 = allSame $ chunksOf ((length s) `div` repeatNum) s
 
 isRepeatAny :: Int -> Bool
 isRepeatAny x = any (`isRepeat` x) [2 .. (length (show x))]
 
 solve :: (Int -> Bool) -> [(Int, Int)] -> Int
-solve criteria pairs = repeatSum
+solve predicate pairs = repeatSum
   where
     repeatNum :: (Int, Int) -> Int
-    repeatNum (x, y) = ret
-      where
-        (xx, yy) = traceLabel "Interval" (x, y)
-        oks = traceLabel "Repeats" $ filter criteria [xx .. yy]
-        ret = sum oks
+    repeatNum (x, y) =
+      let (xx, yy) = traceLabel "Interval" (x, y)
+          oks = traceLabel "Repeats" $ filter predicate [xx .. yy]
+       in sum oks
 
     repeatNums = traceLabel "repeatNums" $ map repeatNum pairs
 
@@ -50,11 +44,11 @@ main = do
   putStrLn $ show input
   let pairs = parse input
 
-  -- TODO van jobb megoldas mint !p1 ? Lehet kifejezesbe is irni?
+  -- lehet parameterbe is tenni
   let !p1 = solve (isRepeat 2) pairs
   let !p2 = solve (isRepeatAny) pairs
   putStrLn $ "!!!!!!! P1 " ++ show p1
   putStrLn $ "!!!!!!! P2 " ++ show p2
+
 -- !!!!!!! P1 30608905813
 -- !!!!!!! P2 31898925685
-
