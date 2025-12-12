@@ -1,21 +1,30 @@
 module Main (main) where
 
-import Data.Array (Array, Ix (inRange), bounds, indices, listArray, (!), elems)
+import Data.Array (Array, Ix (inRange), bounds, elems, indices, listArray, (!))
 
 type Coor = (Int, Int)
 
-
 data Map = Map
-  { -- TODO replace with size Ix? Inclusive?
+  { -- TODO replace with size Ix? Inclusive? maybe use bounds
     matrix :: Array Coor Char,
     height :: Int,
     width :: Int
   }
 
+-- TODO hasznaljak {-# LANGUAGE RecordDotSyntax #-} -ot?
+-- can I do show m = "Map{" ++ (show m.height) ++ ", " ++ (show m.width) ++ "}"
+-- show m = "Map{" ++ show (height m) ++ ", " ++ show (width m) ++ "}"
+instance Show Map where
+  show Map {matrix = mat, height, width} = unlines [ 
+    [mat ! (y, x) | x <- [0 .. height - 1]] | y <- [0 .. width - 1]]
+
+mapEmpty :: Char
+mapEmpty = '.'
+
 valAt :: Map -> Coor -> Char
 valAt m c
   | (inRange $ bounds $ matrix m) c = matrix m ! c
-  | otherwise = '.' -- TODO make it a constant
+  | otherwise = mapEmpty -- constant example, should be '.'
 
 neigh8 :: Coor -> [Coor]
 neigh8 (y, x) =
@@ -39,32 +48,11 @@ removeOuter m@(Map mat w h) = (removeCount, newMap)
     newVal :: Coor -> Char
     newVal c = case valAt m c of
       '@' -> if (neighCount c) < 4 then 'x' else '@'
-      otherwise -> '.'
+      _ -> '.'
     b = bounds mat
     newMatrix = listArray b $ map newVal (indices mat)
     newMap = Map (newMatrix) h w
-    removeCount = sum [1 | c <- elems newMatrix, c=='x']
-
--- -- TODO lehetseges lenne matrix.indecies-t irni valahogy?
--- countP1 :: Map -> Int
--- countP1 m@(Map mat _ _) = length $ filter (< 4) neighNum
---   where
---     -- sum $ map (\c if c == '@' then 1 else 0) $ map (map (mat !)) $ map neigh8 $ indecies mat
-
---     -- isPaper :: Char -> toBool
---     -- isPaper = case valueA
-
---     idxs = filter (\(_, c) -> if c == '@' then True else False) $ assocs mat :: [Coor]
---     neighList = map neigh8 $ indices mat :: [[Coor]]
---     neighVals = traceLabel "neighVals" $ map (map (valAt m)) neighList :: [String]
---     boolList = map (map (\c -> if c == '@' then 1 else 0)) neighVals :: [[Int]]
---     neighNum = traceLabel "neighNum" $ map sum boolList :: [Int]
-
--- TODO hasznaljak {-# LANGUAGE RecordDotSyntax #-} -ot?
-instance Show Map where
-  -- can I do show m = "Map{" ++ (show m.height) ++ ", " ++ (show m.width) ++ "}"
-  -- show m = "Map{" ++ show (height m) ++ ", " ++ show (width m) ++ "}"
-  show m = concat [[(matrix m) ! (y, x) | x <- [0 .. (height m) - 1]] ++ "\n" | y <- [0 .. (width m) - 1]]
+    removeCount = sum [1 | c <- elems newMatrix, c == 'x']
 
 parseLines :: [String] -> Map
 parseLines ls = Map m h w
@@ -76,9 +64,9 @@ parseLines ls = Map m h w
 removeAll :: Map -> [(Int, Map)]
 removeAll m = case removeCount of
   0 -> []
-  otherwise -> (removeCount, newM) : removeAll newM
+  _ -> (removeCount, newM) : removeAll newM
   where
-      (removeCount, newM) = removeOuter m
+    (removeCount, newM) = removeOuter m
 
 showMaps :: [(Int, Map)] -> String
 showMaps [] = ""
@@ -99,3 +87,6 @@ main = do
   let p2 = sum $ fst $ unzip states
   putStrLn $ "!!!!!!!!! P1: " ++ show p1
   putStrLn $ "!!!!!!!!! P2: " ++ show p2
+
+-- !!!!!!!!! P1: 1543
+-- !!!!!!!!! P2: 9038
