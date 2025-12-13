@@ -22,7 +22,6 @@ solve operations operands = sum $ applyAll operations operands
 main :: IO ()
 main = do
   input <- lines <$> readFile "d06/input.txt"
-  print input
   let tokenized = map words input
   print tokenized
   let operations = map head $ last tokenized :: [Char]
@@ -31,6 +30,8 @@ main = do
   print operands
   print $ applyAll operations operands
 
+  let (!p1) = solve operations operands :: Int
+
   let p2Input = init input
   print p2Input
   let cols = map trim $ transpose p2Input
@@ -38,7 +39,6 @@ main = do
   let p2Operands = map (map read) $ splitWhen (== "") cols :: [[Int]]
   print p2Operands
 
-  let (!p1) = solve operations operands :: Int
   let (!p2) = solve operations p2Operands :: Int
   putStrLn $ "!!!!!!!!! P1: " ++ show p1
   putStrLn $ "!!!!!!!!! P2: " ++ show p2
