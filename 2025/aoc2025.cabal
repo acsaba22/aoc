@@ -50,3 +50,9 @@ executable d05
     hs-source-dirs:   d05
     main-is:          Main.hs
     build-depends:    base ^>=4.18.3.0, extra, aoc2025, array
+
+executable d06
+    import:           warnings
+    hs-source-dirs:   d06
+    main-is:          Main.hs
+    build-depends:    base ^>=4.18.3.0, extra, aoc2025, array, split
