@@ -3,7 +3,7 @@ import Data.Vector (Vector, (!), (!?))
 import qualified Data.Vector as V -- TODO V.length -et lehet mashogy is importalni?
 
 fname :: String
-fname = "d07/example.txt"
+fname = "d07/input.txt"
 
 type CI = (Char, Int)
 
