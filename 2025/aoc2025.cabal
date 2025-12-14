@@ -62,3 +62,9 @@ executable d07
     hs-source-dirs:   d07
     main-is:          Main.hs
     build-depends:    base ^>=4.18.3.0, extra, aoc2025, array, split, bytestring, vector
+
+executable d08
+    import:           warnings
+    hs-source-dirs:   d08
+    main-is:          Main.hs
+    build-depends:    base ^>=4.18.3.0, extra, aoc2025, array, split, bytestring, vector, containers
